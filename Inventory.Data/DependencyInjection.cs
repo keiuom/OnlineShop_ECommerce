@@ -12,7 +12,7 @@ namespace Inventory.Data
         {
             services.AddDbContext<InventoryDbContext>(options =>
                 options.UseSqlServer(
-                    configuration.GetConnectionString("InventoryConnection"),
+                    configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(InventoryDbContext).Assembly.FullName)));
 
             Load(services);

@@ -1,4 +1,4 @@
-﻿using Inventory.Services.Product;
+﻿using Inventory.Services.Products;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Inventory.Services

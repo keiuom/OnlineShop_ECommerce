@@ -16,7 +16,7 @@ namespace Inventory.Services.Products
             _repository = repository;
         }
 
-        public async Task<List<GetProductDto>> GetProductsAsync()
+        public Task<List<GetProductDto>> GetProductsAsync()
         {
             //var products = await _productRepository.GetAllAsync();
             throw new NotImplementedException();
@@ -26,7 +26,11 @@ namespace Inventory.Services.Products
         {
             var product = await GetProductEntityAsync(productId);
 
-            return new();
+            return new GetProductDto { 
+                Id = product.Id,
+                Name = product.Name,
+                Quantity = product.Quantity,
+            };
         }
 
         public async Task<GetProductDto> AddProductAsync(AddProductModel productModel)
@@ -42,8 +46,14 @@ namespace Inventory.Services.Products
             };
 
             await _repository.ProductRepository.AddAsync(product);
+            await _repository.SaveAsync();
 
-            return new();
+            return new GetProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Quantity = product.Quantity,
+            };
         }
 
         public async Task<GetProductDto> EditProductAsync(EditProductModel productModel)
@@ -54,6 +64,14 @@ namespace Inventory.Services.Products
             existingProduct.LastUpdatedAt = DateTime.UtcNow;
 
             _repository.ProductRepository.Edit(existingProduct);
+            await _repository.SaveAsync();
+
+            return new GetProductDto
+            {
+                Id = existingProduct.Id,
+                Name = existingProduct.Name,
+                Quantity = existingProduct.Quantity,
+            };
         }
 
         public async Task<Response> DeleteProductAsync(int productId)
@@ -61,6 +79,7 @@ namespace Inventory.Services.Products
             var product = await GetProductEntityAsync(productId);
 
             _repository.ProductRepository.Remove(product);
+            await _repository.SaveAsync();
 
             return new Response { IsSuccess = true, Message = "Product delete successfully!" };
         }
