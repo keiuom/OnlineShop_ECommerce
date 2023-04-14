@@ -20,10 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Repositories\" />
-	</ItemGroup>
-
-	<ItemGroup>
+	  <ProjectReference Include="..\BuyNow.Data\BuyNow.Data.csproj" />
 	  <ProjectReference Include="..\Inventory.Core\Inventory.Core.csproj" />
 	</ItemGroup>
 

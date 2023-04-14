@@ -1,4 +1,5 @@
 ﻿using Inventory.Data.DbContexts;
+using Inventory.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,13 @@ namespace Inventory.Data
                 options.UseSqlServer(
                     configuration.GetConnectionString("InventoryConnection"),
                     b => b.MigrationsAssembly(typeof(InventoryDbContext).Assembly.FullName)));
+
+            Load(services);
+        }
+
+        private static void Load(IServiceCollection services)
+        {
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
     }
 }
