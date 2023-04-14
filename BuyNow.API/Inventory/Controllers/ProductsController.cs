@@ -17,6 +17,12 @@ namespace BuyNow.API.Inventory.Controllers
             _productService = productService;
         }
 
+        [HttpGet("id")]
+        public async Task<ActionResult<GetProductDto>> GetProductAsync(int id)
+        {
+            return await _productService.GetProductByIdAsync(id);
+        }
+
         [HttpPost]
         public async Task<ActionResult<GetProductDto>> AddProductAsync(AddProductModel productModel)
         {
