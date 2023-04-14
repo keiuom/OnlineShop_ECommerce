@@ -1,4 +1,5 @@
-﻿using Inventory.Data.Repositories;
+﻿using Inventory.Common.DTOs;
+using Inventory.Data.Repositories;
 
 namespace Inventory.Services.Product
 {
