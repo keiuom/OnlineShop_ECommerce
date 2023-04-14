@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyNow.Data", "BuyNow.Data\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyNow.Core", "BuyNow.Core\BuyNow.Core.csproj", "{F49210AC-A5B8-4E9B-9283-461F84D6CB88}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inventory", "Inventory", "{013571D4-F20F-479F-8001-7EBB20C448DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Data", "Inventory.Data\Inventory.Data.csproj", "{3FEC2C11-2FCC-4858-82B0-2449A3917828}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +25,16 @@ Global
 		{F49210AC-A5B8-4E9B-9283-461F84D6CB88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F49210AC-A5B8-4E9B-9283-461F84D6CB88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F49210AC-A5B8-4E9B-9283-461F84D6CB88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FEC2C11-2FCC-4858-82B0-2449A3917828}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FEC2C11-2FCC-4858-82B0-2449A3917828}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FEC2C11-2FCC-4858-82B0-2449A3917828}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FEC2C11-2FCC-4858-82B0-2449A3917828}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3FEC2C11-2FCC-4858-82B0-2449A3917828} = {013571D4-F20F-479F-8001-7EBB20C448DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BB9002B1-9721-48AE-8199-6D6146A29683}
