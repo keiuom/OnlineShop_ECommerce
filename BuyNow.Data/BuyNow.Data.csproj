@@ -23,4 +23,8 @@
     <Folder Include="Repositories\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BuyNow.Core\BuyNow.Core.csproj" />
+  </ItemGroup>
+
 </Project>
