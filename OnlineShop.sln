@@ -3,25 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyNow.Data", "BuyNow.Data\BuyNow.Data.csproj", "{C29A5973-D2B1-4FCE-88EC-618534C6BC89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyNow.Data", "BuyNow.Data\BuyNow.Data.csproj", "{C29A5973-D2B1-4FCE-88EC-618534C6BC89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyNow.Core", "BuyNow.Core\BuyNow.Core.csproj", "{F49210AC-A5B8-4E9B-9283-461F84D6CB88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyNow.Core", "BuyNow.Core\BuyNow.Core.csproj", "{F49210AC-A5B8-4E9B-9283-461F84D6CB88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inventory", "Inventory", "{013571D4-F20F-479F-8001-7EBB20C448DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Data", "Inventory.Data\Inventory.Data.csproj", "{3FEC2C11-2FCC-4858-82B0-2449A3917828}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Data", "Inventory.Data\Inventory.Data.csproj", "{3FEC2C11-2FCC-4858-82B0-2449A3917828}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoreLibraries", "CoreLibraries", "{9B77C130-7F38-4C5A-A567-84737FA64469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Core", "Inventory.Core\Inventory.Core.csproj", "{55826373-13D5-4504-A0A3-D3A2DF93C628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Core", "Inventory.Core\Inventory.Core.csproj", "{55826373-13D5-4504-A0A3-D3A2DF93C628}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Services", "Inventory.Services\Inventory.Services.csproj", "{D8C4BD89-0432-4C61-94DB-6C1A2D827B49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Services", "Inventory.Services\Inventory.Services.csproj", "{D8C4BD89-0432-4C61-94DB-6C1A2D827B49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Common", "Inventory.Common\Inventory.Common.csproj", "{B22552D4-1F44-4E13-A167-F791E063DEC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Common", "Inventory.Common\Inventory.Common.csproj", "{B22552D4-1F44-4E13-A167-F791E063DEC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{33D6A6E6-F680-4AB5-A9F4-0762AD518325}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuyNow.API", "BuyNow.API\BuyNow.API.csproj", "{3C0EE60C-DB07-4C04-BA03-8075B3EAED2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyNow.API", "BuyNow.API\BuyNow.API.csproj", "{3C0EE60C-DB07-4C04-BA03-8075B3EAED2F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{0514222D-F41A-473B-BD8C-DF68C9BF6944}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Core", "Order.Core\Order.Core.csproj", "{F87B625A-0CE8-4392-9859-11EB40C1BDDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,10 @@ Global
 		{3C0EE60C-DB07-4C04-BA03-8075B3EAED2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C0EE60C-DB07-4C04-BA03-8075B3EAED2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C0EE60C-DB07-4C04-BA03-8075B3EAED2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F87B625A-0CE8-4392-9859-11EB40C1BDDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F87B625A-0CE8-4392-9859-11EB40C1BDDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F87B625A-0CE8-4392-9859-11EB40C1BDDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F87B625A-0CE8-4392-9859-11EB40C1BDDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +77,7 @@ Global
 		{D8C4BD89-0432-4C61-94DB-6C1A2D827B49} = {013571D4-F20F-479F-8001-7EBB20C448DB}
 		{B22552D4-1F44-4E13-A167-F791E063DEC2} = {013571D4-F20F-479F-8001-7EBB20C448DB}
 		{3C0EE60C-DB07-4C04-BA03-8075B3EAED2F} = {33D6A6E6-F680-4AB5-A9F4-0762AD518325}
+		{F87B625A-0CE8-4392-9859-11EB40C1BDDB} = {0514222D-F41A-473B-BD8C-DF68C9BF6944}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BB9002B1-9721-48AE-8199-6D6146A29683}
