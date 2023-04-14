@@ -1,4 +1,4 @@
-﻿namespace Inventory.Services.Product
+﻿namespace Inventory.Services.Products
 {
     public interface IProductService
     {

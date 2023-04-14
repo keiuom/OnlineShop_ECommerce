@@ -21,6 +21,7 @@ namespace Inventory.Data
         private static void Load(IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
     }
 }
