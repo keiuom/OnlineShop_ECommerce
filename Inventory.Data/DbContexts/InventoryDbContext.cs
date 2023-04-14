@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Inventory.Core.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inventory.Data.DbContexts
 {
@@ -18,5 +19,7 @@ namespace Inventory.Data.DbContexts
         {
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Product> Products { get; set; } = default!;
     }
 }

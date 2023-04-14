@@ -23,4 +23,8 @@
 	  <Folder Include="Repositories\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Inventory.Core\Inventory.Core.csproj" />
+	</ItemGroup>
+
 </Project>
