@@ -10,4 +10,11 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BuyNow.Core\BuyNow.Core.csproj" />
+    <ProjectReference Include="..\Order.Common\Order.Common.csproj" />
+    <ProjectReference Include="..\Order.Core\Order.Core.csproj" />
+    <ProjectReference Include="..\Order.Data\Order.Data.csproj" />
+  </ItemGroup>
+
 </Project>
