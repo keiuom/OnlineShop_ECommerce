@@ -1,4 +1,5 @@
 ﻿using BuyNow.Core.Common;
+using BuyNow.Core.Helpers;
 using Order.Common.DTOs;
 using Order.Common.Enums;
 using Order.Common.Models;
@@ -30,13 +31,17 @@ namespace Order.Services.Orders
             return new Response { IsSuccess = true, Message = "Order placed successfully!" };
         }
 
-        public async Task<List<OrderDto>> GetOrdersAsync()
+        public async Task<OrderListDto> GetOrdersAsync(int pageNumber, int pageSize)
         {
-            var orders = (await _repository.OrderRepository
-                    .GetAllAsync())
-                    .ToList();
+            var order = await _repository.OrderRepository.GetOrdersAsync(pageNumber, pageSize);
 
-            return PrepareOrderDtos(orders);
+            var paging = new PagingHeader(order.CurrentPage, order.PageSize, order.TotalCount, order.TotalPages);
+
+            return new OrderListDto
+            {
+                Orders = PrepareOrderDtos(order.ToList()),
+                Paging = paging,
+            };
         }
 
         private List<OrderDto> PrepareOrderDtos(List<OrderEO> orders)

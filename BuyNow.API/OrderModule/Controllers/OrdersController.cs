@@ -1,4 +1,5 @@
-﻿using BuyNow.Core.Common;
+﻿using BuyNow.API.Helpers;
+using BuyNow.Core.Common;
 using Microsoft.AspNetCore.Mvc;
 using Order.Common.DTOs;
 using Order.Common.Models;
@@ -24,9 +25,13 @@ namespace BuyNow.API.OrderModule.Controllers
         }
 
         [HttpGet]
-        public async Task<List<OrderDto>> GetOrdersAsync()
+        public async Task<OrderListDto> GetOrdersAsync([FromQuery] OrderParam orderParam)
         {
-            return await _orderService.GetOrdersAsync();
+            var orderListDto = await _orderService.GetOrdersAsync(orderParam.PageNumber, orderParam.PageSize);
+
+            Response.AddPagination(orderListDto.Paging.CurrentPage, orderListDto.Paging.ItemsPerPage, orderListDto.Paging.TotalItems, orderListDto.Paging.TotalPages);
+
+            return orderListDto;
         }
     }
 }

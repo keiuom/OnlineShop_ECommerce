@@ -1,9 +1,11 @@
-﻿using BuyNow.Data;
-using orderEntity = OrderModule.Core.Domain;
+﻿using BuyNow.Core.Helpers;
+using BuyNow.Data;
+using OrderEO = OrderModule.Core.Domain.Order;
 
 namespace OrderModule.Data.Repositories
 {
-    public interface IOrderRepository : IRepository<orderEntity.Order, int>
+    public interface IOrderRepository : IRepository<OrderEO, int>
     {
+        Task<PagedList<OrderEO>> GetOrdersAsync(int pageNumber, int pageSize);
     }
 }
