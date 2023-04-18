@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OrderModule.Core.Domain;
+using orderEntity = OrderModule.Core.Domain;
 
 namespace OrderModule.Data.DbContexts
 {
@@ -18,5 +20,9 @@ namespace OrderModule.Data.DbContexts
         {
             base.OnModelCreating(builder);
         }
+
+        public DbSet<orderEntity.Order> Orders { get; set; } = default!;
+
+        public DbSet<OrderDetail> OrderDetails { get; set; } = default!;
     }
 }

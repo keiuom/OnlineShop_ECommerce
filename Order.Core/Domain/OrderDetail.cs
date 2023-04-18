@@ -9,9 +9,9 @@ namespace OrderModule.Core.Domain
 
         public int Quantity { get; set; }
 
-        //public int OrderId { get; set; }
+        public int OrderId { get; set; }
 
-        //[ForeignKey("OrderId")]
-        //public Order Order { get; set; } = default!;
+        [ForeignKey("OrderId")]
+        public Order Order { get; set; } = default!;
     }
 }
