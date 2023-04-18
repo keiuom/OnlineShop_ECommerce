@@ -1,4 +1,5 @@
 using BuyNow.API.Inventory.StartupServices;
+using BuyNow.API.OrderModule.StartupServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterInventoryDependencyInjection(builder.Configuration);
+builder.Services.RegisterOrderModuleDependencyInjection(builder.Configuration);
 
 var app = builder.Build();
 

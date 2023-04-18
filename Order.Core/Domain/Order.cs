@@ -9,6 +9,6 @@ namespace Order.Core.Domain
 
         public OrderStatusEnum Status { get; set; }
 
-        public List<OrderDetail> OrderDetails { get; set; } = default!;
+        //public List<OrderDetail> OrderDetails { get; set; } = default!;
     }
 }

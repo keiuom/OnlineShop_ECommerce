@@ -18,6 +18,8 @@
     <ProjectReference Include="..\Inventory.Common\Inventory.Common.csproj" />
     <ProjectReference Include="..\Inventory.Data\Inventory.Data.csproj" />
     <ProjectReference Include="..\Inventory.Services\Inventory.Services.csproj" />
+    <ProjectReference Include="..\Order.Data\Order.Data.csproj" />
+    <ProjectReference Include="..\Order.Services\Order.Services.csproj" />
   </ItemGroup>
 
 </Project>
