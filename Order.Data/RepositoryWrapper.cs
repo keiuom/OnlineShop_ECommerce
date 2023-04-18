@@ -1,6 +1,6 @@
-﻿using Order.Data.DbContexts;
+﻿using OrderModule.Data.DbContexts;
 
-namespace Order.Data
+namespace OrderModule.Data
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {

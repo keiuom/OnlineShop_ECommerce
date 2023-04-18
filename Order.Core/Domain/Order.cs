@@ -1,7 +1,7 @@
 ﻿using BuyNow.Core;
-using Order.Core.Enums;
+using OrderModule.Core.Enums;
 
-namespace Order.Core.Domain
+namespace OrderModule.Core.Domain
 {
     public class Order : BaseEntity<int>
     {

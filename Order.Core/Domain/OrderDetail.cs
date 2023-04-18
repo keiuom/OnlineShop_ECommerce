@@ -1,7 +1,7 @@
 ﻿using BuyNow.Core;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Order.Core.Domain
+namespace OrderModule.Core.Domain
 {
     public class OrderDetail : BaseEntity<int>
     {

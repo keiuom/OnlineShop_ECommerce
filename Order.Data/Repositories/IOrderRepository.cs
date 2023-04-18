@@ -1,9 +1,9 @@
 ﻿using BuyNow.Data;
-using orderEntity = Order.Core.Domain;
+using OrderModule.Core.Domain;
 
-namespace Order.Data.Repositories
+namespace OrderModule.Data.Repositories
 {
-    public interface IOrderRepository : IRepository<orderEntity.Order, int>
+    public interface IOrderRepository : IRepository<Order, int>
     {
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Order.Data.DbContexts
+namespace OrderModule.Data.DbContexts
 {
     public class OrderDbContext : DbContext
     {

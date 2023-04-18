@@ -1,4 +1,4 @@
-﻿namespace Order.Data
+﻿namespace OrderModule.Data
 {
     public interface IRepositoryWrapper
     {

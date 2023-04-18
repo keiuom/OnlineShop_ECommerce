@@ -23,13 +23,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{33D6A6E6-F68
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyNow.API", "BuyNow.API\BuyNow.API.csproj", "{3C0EE60C-DB07-4C04-BA03-8075B3EAED2F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{0514222D-F41A-473B-BD8C-DF68C9BF6944}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OrderModule", "OrderModule", "{0514222D-F41A-473B-BD8C-DF68C9BF6944}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Core", "Order.Core\Order.Core.csproj", "{F87B625A-0CE8-4392-9859-11EB40C1BDDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Core", "Order.Core\Order.Core.csproj", "{F87B625A-0CE8-4392-9859-11EB40C1BDDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Data", "Order.Data\Order.Data.csproj", "{34B2F6C6-C005-4AC6-B762-A1860DDA2A89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Data", "Order.Data\Order.Data.csproj", "{34B2F6C6-C005-4AC6-B762-A1860DDA2A89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Services", "Order.Services\Order.Services.csproj", "{A2E5B4BB-40F0-4DD1-B002-7157C5CDDFAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Services", "Order.Services\Order.Services.csproj", "{A2E5B4BB-40F0-4DD1-B002-7157C5CDDFAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

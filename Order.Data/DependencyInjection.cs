@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Order.Data.DbContexts;
-using Order.Data.Repositories;
+using OrderModule.Data.DbContexts;
+using OrderModule.Data.Repositories;
 
-namespace Order.Data
+namespace OrderModule.Data
 {
     public static class DependencyInjection
     {

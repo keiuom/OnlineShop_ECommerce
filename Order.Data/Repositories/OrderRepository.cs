@@ -1,11 +1,10 @@
 ﻿using BuyNow.Data;
-using Order.Data.DbContexts;
-using orderEntity = Order.Core.Domain;
+using OrderModule.Core.Domain;
+using OrderModule.Data.DbContexts;
 
-
-namespace Order.Data.Repositories
+namespace OrderModule.Data.Repositories
 {
-    public class OrderRepository : Repository<orderEntity.Order, int, OrderDbContext>, IOrderRepository
+    public class OrderRepository : Repository<Order, int, OrderDbContext>, IOrderRepository
     {
         public OrderRepository(OrderDbContext orderDbContext)
             : base(orderDbContext) { }

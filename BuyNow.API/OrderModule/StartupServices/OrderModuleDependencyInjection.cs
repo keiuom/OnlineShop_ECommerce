@@ -1,5 +1,5 @@
-﻿using Order.Data;
-using Order.Services;
+﻿using OrderModule.Data;
+using OrderModule.Services;
 
 namespace BuyNow.API.OrderModule.StartupServices
 {
