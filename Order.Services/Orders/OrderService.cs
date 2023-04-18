@@ -1,4 +1,6 @@
 ﻿using BuyNow.Core.Common;
+using Order.Common.DTOs;
+using Order.Common.Enums;
 using Order.Common.Models;
 using OrderModule.Core.Domain;
 using OrderModule.Data;
@@ -26,6 +28,35 @@ namespace Order.Services.Orders
             await _repository.SaveAsync();
 
             return new Response { IsSuccess = true, Message = "Order placed successfully!" };
+        }
+
+        public async Task<List<OrderDto>> GetOrdersAsync()
+        {
+            var orders = (await _repository.OrderRepository
+                    .GetAllAsync())
+                    .ToList();
+
+            return PrepareOrderDtos(orders);
+        }
+
+        private List<OrderDto> PrepareOrderDtos(List<OrderEO> orders)
+        {
+            var orderDtos = new List<OrderDto>();
+
+            orders.ForEach(order =>
+            {
+                var orderDto = new OrderDto
+                {
+                    Id = order.Id,
+                    CustomerEmail = order.CustomerEmail,
+                    OrderStatus = (OrderStatus)order.Status,
+                    PlacedDate = order.CreatedAt
+                };
+
+                orderDtos.Add(orderDto);
+            });
+
+            return orderDtos;
         }
 
         private OrderEO PrepareOrderEntity(OrderModel orderModel)
