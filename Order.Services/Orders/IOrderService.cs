@@ -11,5 +11,7 @@ namespace Order.Services.Orders
         Task<Response> PlaceOrderAsync(OrderModel orderModel);
 
         Task<OrderListDto> GetOrdersAsync(int pageNumber, int pageSize);
+
+        Task CloseOrderAsync(int orderId);
     }
 }

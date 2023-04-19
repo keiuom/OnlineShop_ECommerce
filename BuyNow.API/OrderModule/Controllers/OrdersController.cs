@@ -33,5 +33,13 @@ namespace BuyNow.API.OrderModule.Controllers
 
             return orderListDto;
         }
+
+        [HttpPut("CloseOrder/{orderId}")]
+        public async Task<IActionResult> CloseOrderAsync(int orderId)
+        {
+            await _orderService.CloseOrderAsync(orderId);
+
+            return Ok();
+        }
     }
 }

@@ -13,6 +13,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.RegisterInventoryDependencyInjection(builder.Configuration);
 builder.Services.RegisterOrderModuleDependencyInjection(builder.Configuration);
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

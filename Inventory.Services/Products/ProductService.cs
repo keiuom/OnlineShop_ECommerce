@@ -84,6 +84,51 @@ namespace Inventory.Services.Products
             return new Response { IsSuccess = true, Message = "Product delete successfully!" };
         }
 
+        public async Task<Response> CheckProductsAvailablityAsync(List<ProductAvailablityModel> products)
+        {
+            var productList = await GetProductsByIds(products);
+
+            foreach (var product in products) 
+            {
+                var existingProduct = productList.FirstOrDefault(p => p.Id == product.Id);
+
+                if (existingProduct is null)
+                    return new Response { IsSuccess = false, Message = "Invalid product found!", StatusCode = 400 };
+
+                if(existingProduct.Quantity < product.Quantity)
+                    return new Response { IsSuccess = false, Message = "Product is not available!", StatusCode = 400 };
+            }
+
+            return new Response { IsSuccess = true, Message = "Products are available!", StatusCode = 200 };
+        }
+
+        public async Task UpdateProductsQuantityAsync(List<ProductAvailablityModel> products)
+        {
+            var productList = await GetProductsByIds(products);
+
+            foreach (var product in products)
+            {
+                var existingProduct = productList.FirstOrDefault(p => p.Id == product.Id);
+
+                if (existingProduct is not null)
+                {
+                    existingProduct.Quantity = existingProduct.Quantity - product.Quantity;
+                    existingProduct.LastUpdatedAt = DateTime.UtcNow;
+                    _repository.ProductRepository.Edit(existingProduct);
+                }
+            }
+
+            await _repository.SaveAsync();
+        }
+
+        private async Task<IList<Product>> GetProductsByIds(List<ProductAvailablityModel> products)
+        {
+            var productIds = products.Select(p => p.Id);
+
+            return await _repository.ProductRepository
+                    .GetAsync(p => productIds.Contains(p.Id));
+        }
+
         private async Task<Product> GetProductEntityAsync(int productId)
         {
             var product = await _repository.ProductRepository.GetByIdAsync(productId);

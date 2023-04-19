@@ -40,5 +40,19 @@ namespace BuyNow.API.Inventory.Controllers
         {
             return await _productService.DeleteProductAsync(id);
         }
+
+        [HttpPost("ProductAvailablityCheck")]
+        public async Task<Response> CheckProductsAvailablityAsync(List<ProductAvailablityModel> products)
+        {
+            return await _productService.CheckProductsAvailablityAsync(products);
+        }
+
+        [HttpPut("ProductQuantity")]
+        public async Task<IActionResult> UpdateProductsQuantityAsync(List<ProductAvailablityModel> products)
+        {
+            await _productService.UpdateProductsQuantityAsync(products);
+
+            return NoContent();
+        }
     }
 }

@@ -15,5 +15,9 @@ namespace Inventory.Services.Products
         Task<GetProductDto> EditProductAsync(EditProductModel productModel);
 
         Task<Response> DeleteProductAsync(int productId);
+
+        Task<Response> CheckProductsAvailablityAsync(List<ProductAvailablityModel> products);
+
+        Task UpdateProductsQuantityAsync(List<ProductAvailablityModel> products);
     }
 }
