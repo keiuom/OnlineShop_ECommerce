@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyNow.Data", "BuyNow.Data\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuyNow.Core", "BuyNow.Core\BuyNow.Core.csproj", "{F49210AC-A5B8-4E9B-9283-461F84D6CB88}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inventory", "Inventory", "{013571D4-F20F-479F-8001-7EBB20C448DB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InventoryModule", "InventoryModule", "{013571D4-F20F-479F-8001-7EBB20C448DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory.Data", "Inventory.Data\Inventory.Data.csproj", "{3FEC2C11-2FCC-4858-82B0-2449A3917828}"
 EndProject
@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Data", "Order.Data\Or
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Services", "Order.Services\Order.Services.csproj", "{A2E5B4BB-40F0-4DD1-B002-7157C5CDDFAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Common", "Order.Common\Order.Common.csproj", "{68CB0B4B-8849-4B41-95F4-3314F3744CA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Common", "Order.Common\Order.Common.csproj", "{68CB0B4B-8849-4B41-95F4-3314F3744CA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
