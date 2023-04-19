@@ -11,39 +11,44 @@ namespace Order.Services.WorkerServices
         private readonly IEmailSender _emailSender;
         private readonly ILogger<EmailWorker> _logger;
 
-        public EmailWorker(IRepositoryWrapper repository,
-                           IEmailSender emailSender,
-                           ILogger<EmailWorker> logger)
+        public EmailWorker(//IRepositoryWrapper repository,
+                           //IEmailSender emailSender,
+                           //ILogger<EmailWorker> logger
+            )
         {
-            _repository = repository;
-            _emailSender = emailSender;
-            _logger = logger;
+            //_repository = repository;
+            //_emailSender = emailSender;
+            //_logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                var unsentMessages = await _repository.EmailMessageRepository
-                        .GetAsync(em => !em.IsSent && em.SentCount < 4);
+                //var unsentMessages = await _repository.EmailMessageRepository
+                //        .GetAsync(em => !em.IsSent && em.SentCount < 4);
 
-                foreach (var message in unsentMessages)
-                {
-                    try
-                    {
-                        await _emailSender.SendAsync(message.Recipient, message.Subject, message.Body);
+                //foreach (var message in unsentMessages)
+                //{
+                //    try
+                //    {
+                //        await _emailSender.SendAsync(message.Recipient, message.Subject, message.Body);
 
-                        message.IsSent = true;
-                        message.SentAt = DateTime.UtcNow;
+                //        message.IsSent = true;
+                //        message.SentAt = DateTime.UtcNow;
 
-                        _repository.EmailMessageRepository.Edit(message);
-                        await _repository.SaveAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex.Message, ex);
-                    }
-                }
+                //        _repository.EmailMessageRepository.Edit(message);
+                //        await _repository.SaveAsync();
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        message.SentCount += 1;
+                //        _repository.EmailMessageRepository.Edit(message);
+                //        await _repository.SaveAsync();
+
+                //        _logger.LogError(ex.Message, ex);
+                //    }
+                //}
 
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }

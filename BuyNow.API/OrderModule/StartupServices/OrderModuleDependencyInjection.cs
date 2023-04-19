@@ -1,4 +1,6 @@
-﻿using OrderModule.Data;
+﻿using Order.Core.Mails;
+using Order.Services.WorkerServices;
+using OrderModule.Data;
 using OrderModule.Services;
 
 namespace BuyNow.API.OrderModule.StartupServices
@@ -9,6 +11,9 @@ namespace BuyNow.API.OrderModule.StartupServices
         {
             services.AddPersistence(configuration);
             services.LoadDependency();
+
+            services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
+            services.AddHostedService<EmailWorker>();
         }
     }
 }
