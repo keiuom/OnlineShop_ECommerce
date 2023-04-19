@@ -17,7 +17,7 @@ namespace BuyNow.API.Inventory.Controllers
             _productService = productService;
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<GetProductDto>> GetProductAsync(int id)
         {
             return await _productService.GetProductByIdAsync(id);
@@ -35,7 +35,7 @@ namespace BuyNow.API.Inventory.Controllers
             return await _productService.EditProductAsync(productModel);
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult<Response>> DeleteProductAsync(int id)
         {
             return await _productService.DeleteProductAsync(id);
