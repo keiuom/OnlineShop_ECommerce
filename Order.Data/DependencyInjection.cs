@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Order.Data.DbContexts;
+using Order.Data.Repositories;
 using OrderModule.Data.DbContexts;
 using OrderModule.Data.Repositories;
 
@@ -15,6 +17,11 @@ namespace OrderModule.Data
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(OrderDbContext).Assembly.FullName)));
 
+            services.AddDbContext<EmailDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly(typeof(EmailDbContext).Assembly.FullName)));
+
             Load(services);
         }
 
@@ -22,6 +29,7 @@ namespace OrderModule.Data
         {
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IEmailMessageRepository, EmailMessageRepository>();
         }
     }
 }
