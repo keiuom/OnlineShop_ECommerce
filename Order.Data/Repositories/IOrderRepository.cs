@@ -9,5 +9,7 @@ namespace OrderModule.Data.Repositories
         Task<PagedList<OrderEO>> GetOrdersAsync(int pageNumber, int pageSize);
 
         Task<OrderEO?> GetOrderByIdAsync(int id);
+
+        Task<List<int>> GetPendingOrderIdsAsync();
     }
 }

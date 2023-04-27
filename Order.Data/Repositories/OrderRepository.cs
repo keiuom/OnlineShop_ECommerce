@@ -25,5 +25,14 @@ namespace OrderModule.Data.Repositories
                     .Include(o => o.OrderDetails)
                     .FirstOrDefaultAsync();
         }
+
+        public async Task<List<int>> GetPendingOrderIdsAsync()
+        {
+            return await _dbContext.Orders
+                .Where(o => o.Status == Core.Enums.OrderStatusEnum.Pending)
+                .OrderBy(o => o.CreatedAt)
+                .Select(o => o.Id)
+                .ToListAsync();
+        }
     }
 }

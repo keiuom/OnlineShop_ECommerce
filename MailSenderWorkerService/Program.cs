@@ -1,5 +1,4 @@
 using MailSenderWorkerService;
-using Microsoft.Extensions.Configuration;
 using Order.Core.Mails;
 using OrderModule.Data;
 using OrderModule.Services;

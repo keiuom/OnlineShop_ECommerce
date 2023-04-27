@@ -58,6 +58,11 @@ namespace Order.Services.Orders
             };
         }
 
+        public async Task<List<int>> GetPendingOrderIdsAsync()
+        {
+            return await _repository.OrderRepository.GetPendingOrderIdsAsync();
+        }
+
         public async Task CloseOrderAsync(int orderId)
         {
             var order = await _repository.OrderRepository
@@ -83,6 +88,7 @@ namespace Order.Services.Orders
                 if (responseData is not null && (responseData.IsSuccess && responseData.StatusCode == 200))
                 {
                     await UpdateOrderStatus(order, responseData);
+                    await AddOrderSuccessMessageToQueue(order.Id, order.CustomerEmail);
                     await UpdateProductsQuantity(productCheckModel);
                 }
             }
@@ -99,7 +105,6 @@ namespace Order.Services.Orders
 
             _repository.OrderRepository.Edit(order);
             await _repository.SaveAsync();
-            await AddOrderSuccessMessageToQueue(order.Id, order.CustomerEmail);
         }
 
         private async Task AddOrderSuccessMessageToQueue(int orderId, string customerEmail)
