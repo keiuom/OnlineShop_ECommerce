@@ -1,17 +1,18 @@
-using System.Text.Json;
+using OrderClosingWorkerService.Clients;
 
 namespace OrderClosingWorkerService
 {
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly IHttpClientService _httpClientService;
+        private readonly string _baseUrl = "https://localhost:7097/api/Orders";
 
         public Worker(ILogger<Worker> logger,
-                      IHttpClientFactory clientFactory)
+                      IHttpClientService httpClientService)
         {
             _logger = logger;
-            _clientFactory = clientFactory;
+            _httpClientService = httpClientService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -22,18 +23,17 @@ namespace OrderClosingWorkerService
 
                 if(pendingOrderIds is not null && pendingOrderIds.Any())
                 {
-                    var client = _clientFactory.CreateClient();
-                    var baseUrl = $"https://localhost:7097/api/Orders/CloseOrder";
+                    var baseUrl = $"{_baseUrl}/CloseOrder";
 
                     foreach (var pendingOrderId in pendingOrderIds)
                     {
-                        var url = $"{baseUrl}/{pendingOrderId}";
-                        var response = await client.PutAsync(url, null);
+                        var request = PrepareHttpRequestMessageForConfirmOrder(baseUrl, pendingOrderId);
+                        var resposeData = await _httpClientService.SendRequestAsync<object>(request);
 
-                        if (response.IsSuccessStatusCode)
-                        {
-                            _logger.LogInformation("Order completed successfully!");
-                        }
+                        //if (response.IsSuccessStatusCode)
+                        //{
+                        //    _logger.LogInformation("Order completed successfully!");
+                        //}
                     }
                 }
 
@@ -44,19 +44,24 @@ namespace OrderClosingWorkerService
 
         private async Task<List<int>?> GetPendingOrders()
         {
-            var client = _clientFactory.CreateClient();
-            var url = "https://localhost:7097/api/Orders/PendingOrders/";
-            var pendingOrderIds = new List<int>();
-
-            var response = await client.GetAsync(url);
-
-            if (response.IsSuccessStatusCode)
+            var request = new HttpRequestMessage()
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                pendingOrderIds = JsonSerializer.Deserialize<List<int>>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            }
+                RequestUri = new Uri($"{_baseUrl}/PendingOrders"),
+                Method = HttpMethod.Get,
+            };
 
-            return pendingOrderIds;
+            return await _httpClientService.SendRequestAsync<List<int>>(request);
+        }
+
+        private HttpRequestMessage PrepareHttpRequestMessageForConfirmOrder(string url, int orderId)
+        {
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri($"{url}/{orderId}"),
+                Method = HttpMethod.Put,
+            };
+
+            return request;
         }
     }
 }
