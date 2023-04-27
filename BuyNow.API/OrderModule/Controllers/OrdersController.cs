@@ -3,6 +3,7 @@ using BuyNow.Core.Common;
 using Microsoft.AspNetCore.Mvc;
 using Order.Common.DTOs;
 using Order.Common.Models;
+using Order.Services.Mails;
 using Order.Services.Orders;
 
 namespace BuyNow.API.OrderModule.Controllers
@@ -12,10 +13,13 @@ namespace BuyNow.API.OrderModule.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly IEmailSender _emailSender;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersController(IOrderService orderService,
+            IEmailSender emailSender)
         {
             _orderService = orderService;
+            _emailSender = emailSender;
         }
 
         [HttpPost]
