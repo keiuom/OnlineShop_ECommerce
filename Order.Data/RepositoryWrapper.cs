@@ -1,5 +1,4 @@
-﻿using Order.Data.Repositories;
-using OrderModule.Data.DbContexts;
+﻿using OrderModule.Data.DbContexts;
 using OrderModule.Data.Repositories;
 
 namespace OrderModule.Data
@@ -8,15 +7,12 @@ namespace OrderModule.Data
     {
         private readonly OrderDbContext _orderDbContext;
         public IOrderRepository OrderRepository { get; set; }
-        public IEmailMessageRepository EmailMessageRepository { get; set; }
 
         public RepositoryWrapper(OrderDbContext orderDbContext,
-                                 IOrderRepository orderRepository,
-                                 IEmailMessageRepository emailMessageRepository)
+                                 IOrderRepository orderRepository)
         {
             _orderDbContext = orderDbContext;
             OrderRepository = orderRepository;
-            EmailMessageRepository = emailMessageRepository;
         }
 
         public async Task SaveAsync()

@@ -7,8 +7,6 @@ namespace OrderModule.Data
     {
         public IOrderRepository OrderRepository { get; set; }
 
-        public IEmailMessageRepository EmailMessageRepository { get; set; }
-
         Task SaveAsync();
     }
 }

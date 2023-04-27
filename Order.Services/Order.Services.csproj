@@ -7,10 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Mails\MailTemplates\OrderSuccessMailTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrderSuccessMailTemplate.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MailKit" Version="4.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="System.CodeDom" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +27,25 @@
     <ProjectReference Include="..\Order.Common\Order.Common.csproj" />
     <ProjectReference Include="..\Order.Core\Order.Core.csproj" />
     <ProjectReference Include="..\Order.Data\Order.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Mails\MailTemplates\OrderSuccessMailTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrderSuccessMailTemplate.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Mails\MailTemplates\OrderSuccessMailTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>OrderSuccessMailTemplate.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

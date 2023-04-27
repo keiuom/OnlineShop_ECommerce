@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using Order.Common.DTOs;
 using Order.Common.Enums;
 using Order.Common.Models;
+using Order.Services.Mails;
+using Order.Services.Mails.MailTemplates;
 using OrderModule.Core.Domain;
 using OrderModule.Data;
 using System.Text;
@@ -17,14 +19,17 @@ namespace Order.Services.Orders
         private readonly IRepositoryWrapper _repository;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<OrderService> _logger;
+        private readonly IEmailMessageService _emailMessageService;
 
         public OrderService(IRepositoryWrapper repository,
                            IHttpClientFactory httpClientFactory,
-                           ILogger<OrderService> logger)
+                           ILogger<OrderService> logger,
+                           IEmailMessageService emailMessageService)
         {
             _repository = repository;
             _httpClientFactory = httpClientFactory;
             _logger = logger;
+            _emailMessageService = emailMessageService;
         }
 
         public async Task<Response> PlaceOrderAsync(OrderModel orderModel)
@@ -94,6 +99,15 @@ namespace Order.Services.Orders
 
             _repository.OrderRepository.Edit(order);
             await _repository.SaveAsync();
+            await AddOrderSuccessMessageToQueue(order.Id, order.CustomerEmail);
+        }
+
+        private async Task AddOrderSuccessMessageToQueue(int orderId, string customerEmail)
+        {
+            var emailTemplate = new OrderSuccessMailTemplate(orderId, "support@gmail.com");
+            var subject = "Order status";
+            var emailBody = emailTemplate.TransformText();
+            await _emailMessageService.AddMessageAsync(customerEmail, subject, emailBody);
         }
 
         private async Task UpdateProductsQuantity(List<ProductAvailablityModel> products)

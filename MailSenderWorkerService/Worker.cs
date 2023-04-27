@@ -29,9 +29,15 @@ namespace MailSenderWorkerService
                     {
                         try
                         {
-                            await _emailSender.SendAsync(message.Recipient, message.Subject, message.Body);
+                            await _emailSender.SendAsync(new MailRequest
+                            {
+                                ToEmail = message.Recipient,
+                                Subject = message.Subject,
+                                Body = message.Body
+                            });
 
                             message.IsSent = true;
+                            message.SentCount += 1;
                             message.SentAt = DateTime.UtcNow;
                         }
                         catch (Exception ex)
@@ -44,7 +50,7 @@ namespace MailSenderWorkerService
                     await _emailMessageService.UpdateMessagesAsync(unsentMessages);
                 }
 
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
             }
         }
     }

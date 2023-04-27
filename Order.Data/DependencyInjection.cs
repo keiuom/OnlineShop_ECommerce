@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Order.Data.DbContexts;
 using Order.Data.Repositories;
+using Order.Data.RepositoryWrappers;
 using OrderModule.Data.DbContexts;
 using OrderModule.Data.Repositories;
 
@@ -28,6 +29,7 @@ namespace OrderModule.Data
         private static void Load(IServiceCollection services)
         {
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<lQueueMailRepositoryWrapper, QueueMailRepositoryWrapper>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IEmailMessageRepository, EmailMessageRepository>();
         }

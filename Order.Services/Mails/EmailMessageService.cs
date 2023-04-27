@@ -1,13 +1,13 @@
 ﻿using Order.Core.Domain;
-using OrderModule.Data;
+using Order.Data.RepositoryWrappers;
 
 namespace Order.Services.Mails
 {
     public class EmailMessageService : IEmailMessageService
     {
-        private readonly IRepositoryWrapper _repository;
+        private readonly lQueueMailRepositoryWrapper _repository;
 
-        public EmailMessageService(IRepositoryWrapper repository)
+        public EmailMessageService(lQueueMailRepositoryWrapper repository)
         {
             _repository = repository;
         }
