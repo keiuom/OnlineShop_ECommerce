@@ -1,15 +1,16 @@
 ﻿using BuyNow.Core.Common;
 using BuyNow.Core.Exceptions;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Order.Common.DTOs;
 using Order.Common.Enums;
 using Order.Common.Models;
+using Order.Services.HttpClients;
 using Order.Services.Mails;
 using Order.Services.Mails.MailTemplates;
 using OrderModule.Core.Domain;
 using OrderModule.Data;
 using System.Text;
-using System.Text.Json;
 using OrderEO = OrderModule.Core.Domain.Order;
 
 namespace Order.Services.Orders
@@ -20,16 +21,20 @@ namespace Order.Services.Orders
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<OrderService> _logger;
         private readonly IEmailMessageService _emailMessageService;
+        private readonly IOrderClient _orderClient;
+        private const string _baseUrl = "https://localhost:7097/api/Products";
 
         public OrderService(IRepositoryWrapper repository,
                            IHttpClientFactory httpClientFactory,
                            ILogger<OrderService> logger,
-                           IEmailMessageService emailMessageService)
+                           IEmailMessageService emailMessageService,
+                           IOrderClient orderClient)
         {
             _repository = repository;
             _httpClientFactory = httpClientFactory;
             _logger = logger;
             _emailMessageService = emailMessageService;
+            _orderClient = orderClient;
         }
 
         public async Task<Response> PlaceOrderAsync(OrderModel orderModel)
@@ -71,31 +76,59 @@ namespace Order.Services.Orders
             if (order is null)
                 throw new NotFoundException(nameof(OrderEO));
 
-            var client = _httpClientFactory.CreateClient();
-
             var productCheckModel = PrepareProductAvailablityCheckModel(order.OrderDetails);
-            var body = JsonSerializer.Serialize(productCheckModel);
-            var content = new StringContent(body, Encoding.UTF8, "application/json");
-            var url = "https://localhost:7097/api/Products/ProductAvailablityCheck/";
+            var request = PrepareRequestPayload(productCheckModel, "ProductAvailablityCheck", HttpMethod.Post);
+            var responseData = await _orderClient.SendRequestAsync<Response>(request);
 
-            var response = await client.PostAsync(url, content);
-
-            if (response.IsSuccessStatusCode)
+            if (responseData is not null && (responseData.IsSuccess && responseData.StatusCode == 200))
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var responseData = JsonSerializer.Deserialize<Response>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-                if (responseData is not null && (responseData.IsSuccess && responseData.StatusCode == 200))
-                {
-                    await UpdateOrderStatus(order, responseData);
-                    await AddOrderSuccessMessageToQueue(order.Id, order.CustomerEmail);
-                    await UpdateProductsQuantity(productCheckModel);
-                }
+                await UpdateOrderStatus(order, responseData);
+                await AddOrderSuccessMessageToQueue(order.Id, order.CustomerEmail);
+                await UpdateProductsQuantity(productCheckModel);
             }
             else
             {
                 _logger.LogError("Not able to proceed this order, something went wrong!");
             }
+
+            //var client = _httpClientFactory.CreateClient();
+
+            
+            //var body = System.Text.Json.JsonSerializer.Serialize(productCheckModel);
+            //var content = new StringContent(body, Encoding.UTF8, "application/json");
+            //var url = "https://localhost:7097/api/Products/ProductAvailablityCheck/";
+
+            //var response = await client.PostAsync(url, content);
+
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    var responseContent = await response.Content.ReadAsStringAsync();
+            //    var responseData = System.Text.Json.JsonSerializer.Deserialize<Response>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            //    if (responseData is not null && (responseData.IsSuccess && responseData.StatusCode == 200))
+            //    {
+            //        await UpdateOrderStatus(order, responseData);
+            //        await AddOrderSuccessMessageToQueue(order.Id, order.CustomerEmail);
+            //        await UpdateProductsQuantity(productCheckModel);
+            //    }
+            //}
+            //else
+            //{
+                
+            //}
+        }
+
+        private HttpRequestMessage PrepareRequestPayload(object data, string apiPath, HttpMethod httpMethod)
+        {
+            var serializedContent = JsonConvert.SerializeObject(data);
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri($"{_baseUrl}/{apiPath}"),
+                Method = httpMethod,
+                Content = new StringContent(serializedContent, Encoding.UTF8, "application/json")
+            };
+
+            return request;
         }
 
         private async Task UpdateOrderStatus(OrderEO order, Response response)
@@ -117,21 +150,24 @@ namespace Order.Services.Orders
 
         private async Task UpdateProductsQuantity(List<ProductAvailablityModel> products)
         {
-            var client = _httpClientFactory.CreateClient();
-            var body = JsonSerializer.Serialize(products);
-            var content = new StringContent(body, Encoding.UTF8, "application/json");
-            var url = "https://localhost:7097/api/Products/ProductQuantity/";
+            var request = PrepareRequestPayload(products, "ProductQuantity", HttpMethod.Put);
+            var responseData = await _orderClient.SendRequestAsync<object>(request);
 
-            var response = await client.PutAsync(url, content);
+            //var client = _httpClientFactory.CreateClient();
+            //var body = System.Text.Json.JsonSerializer.Serialize(products);
+            //var content = new StringContent(body, Encoding.UTF8, "application/json");
+            //var url = "https://localhost:7097/api/Products/ProductQuantity/";
 
-            if (response.IsSuccessStatusCode)
-            {
-                _logger.LogInformation("Products quantities updated successfully!");
-            }
-            else
-            {
-                _logger.LogError("Products quantities failed to update!");
-            }
+            //var response = await client.PutAsync(url, content);
+
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    _logger.LogInformation("Products quantities updated successfully!");
+            //}
+            //else
+            //{
+            //    _logger.LogError("Products quantities failed to update!");
+            //}
         }
 
         private List<ProductAvailablityModel> PrepareProductAvailablityCheckModel(List<OrderDetail> orderDetails)

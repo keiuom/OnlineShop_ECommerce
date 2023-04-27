@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Order.Services.HttpClients;
 using Order.Services.Mails;
 using Order.Services.Orders;
 
@@ -11,6 +12,7 @@ namespace OrderModule.Services
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IEmailMessageService, EmailMessageService>();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddSingleton<IOrderClient, OrderClient>();
         }
     }
 }
