@@ -46,6 +46,12 @@ namespace BuyNow.Data
             _dbContext.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
+        public virtual void EditRange(IList<TEntity> entitiesToUpdate)
+        {
+            _dbSet.AttachRange(entitiesToUpdate);
+            _dbSet.UpdateRange(entitiesToUpdate);
+        }
+
         public virtual Task<int> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null)
         {
             IQueryable<TEntity> query = _dbSet;

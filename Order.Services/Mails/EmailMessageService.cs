@@ -28,5 +28,24 @@ namespace Order.Services.Mails
             await _repository.EmailMessageRepository.AddAsync(message);
             await _repository.SaveAsync();
         }
+
+        public async Task<List<EmailMessage>> GetAllUnsentMessagesAsync()
+        {
+            return (await _repository.EmailMessageRepository
+                    .GetAsync(em => !em.IsSent && em.SentCount < 4))
+                    .ToList();
+        }
+
+        public async Task UpdateMessageAsync(EmailMessage emailMessage)
+        {
+           _repository.EmailMessageRepository.Edit(emailMessage);
+            await _repository.SaveAsync();
+        }
+
+        public async Task UpdateMessagesAsync(List<EmailMessage> emailMessages)
+        {
+            _repository.EmailMessageRepository.EditRange(emailMessages);
+            await _repository.SaveAsync();
+        }
     }
 }

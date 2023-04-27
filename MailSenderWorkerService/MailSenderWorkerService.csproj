@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-MailSenderWorkerService-008bc432-02f5-402b-a5c8-0fea1e188963</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Order.Core\Order.Core.csproj" />
+    <ProjectReference Include="..\Order.Data\Order.Data.csproj" />
+    <ProjectReference Include="..\Order.Services\Order.Services.csproj" />
+  </ItemGroup>
+</Project>

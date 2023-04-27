@@ -14,6 +14,8 @@ namespace BuyNow.Data
 
         void Edit(TEntity entityToUpdate);
 
+        void EditRange(IList<TEntity> entitiesToUpdate);
+
         Task<int> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null);
 
         Task<IList<TEntity>> GetAsync(Expression<Func<TEntity, bool>> filter);
