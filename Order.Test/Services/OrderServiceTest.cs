@@ -1,6 +1,7 @@
 ﻿using Autofac.Extras.Moq;
 using BuyNow.Core.Common;
 using BuyNow.Core.Helpers;
+using BuyNow.Data;
 using Moq;
 using Order.Common.DTOs;
 using Order.Common.Models;
@@ -278,6 +279,80 @@ namespace Order.Test.Services
                 result => result.Orders[0].Id.ShouldBeEquivalentTo(orders[0].Id),
                 result => result.Orders[0].CustomerEmail.ShouldBeEquivalentTo(orders[0].CustomerEmail),
                 result => result.Orders[1].Id.ShouldBeEquivalentTo(orders[1].Id),
+                result => _repositoryMock.Verify()
+                );
+        }
+
+        [Test]
+        public async Task GetPendingOrderIdsAsync_ReturnsListOfIntegers()
+        {
+            // Arrange
+            var pendingOrderIds = new List<int>();
+
+            _repositoryMock.Setup(r => r.OrderRepository)
+                .Returns(_orderRepositoryMock.Object);
+
+            _repositoryMock.Setup(r => r.OrderRepository.GetPendingOrderIdsAsync())
+                .ReturnsAsync(pendingOrderIds)
+                .Verifiable();
+
+            // Act
+            var result = await _orderService.GetPendingOrderIdsAsync();
+
+            // Assert
+            result.ShouldSatisfyAllConditions(
+                result => result.ShouldBeOfType<List<int>>(),
+                result => _repositoryMock.Verify()
+                );
+        }
+
+        [Test]
+        public async Task GetPendingOrderIdsAsync_ReturnsCorrectNumberOfOrderIdWithCorrectOrderIds()
+        {
+            // Arrange
+            var expectedCount = 3;
+            var pendingOrderIds = new List<int>()
+            {
+                1, 2, 3
+            };
+
+            _repositoryMock.Setup(r => r.OrderRepository)
+                .Returns(_orderRepositoryMock.Object);
+
+            _repositoryMock.Setup(r => r.OrderRepository.GetPendingOrderIdsAsync())
+                .ReturnsAsync(pendingOrderIds)
+                .Verifiable();
+
+            // Act
+            var result = await _orderService.GetPendingOrderIdsAsync();
+
+            // Assert
+            result.ShouldSatisfyAllConditions(
+                result => result.Count.ShouldBeEquivalentTo(expectedCount),
+                result => result.ShouldBeEquivalentTo(pendingOrderIds),
+                result => _repositoryMock.Verify()
+                );
+        }
+
+        [Test]
+        public async Task GetPendingOrderIdsAsync_ReturnsEmptyListWhenNoPendingOrders()
+        {
+            // Arrange
+            var pendingOrderIds = new List<int>();
+
+            _repositoryMock.Setup(r => r.OrderRepository)
+                .Returns(_orderRepositoryMock.Object);
+
+            _repositoryMock.Setup(r => r.OrderRepository.GetPendingOrderIdsAsync())
+                .ReturnsAsync(pendingOrderIds)
+                .Verifiable();
+
+            // Act
+            var result = await _orderService.GetPendingOrderIdsAsync();
+
+            // Assert
+            result.ShouldSatisfyAllConditions(
+                result => result.ShouldBeEmpty(),
                 result => _repositoryMock.Verify()
                 );
         }
