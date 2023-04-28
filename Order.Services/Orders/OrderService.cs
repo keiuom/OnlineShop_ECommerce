@@ -18,20 +18,17 @@ namespace Order.Services.Orders
     public class OrderService : IOrderService
     {
         private readonly IRepositoryWrapper _repository;
-        private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<OrderService> _logger;
         private readonly IEmailMessageService _emailMessageService;
         private readonly IOrderClient _orderClient;
         private const string _baseUrl = "https://localhost:7097/api/Products";
 
         public OrderService(IRepositoryWrapper repository,
-                           IHttpClientFactory httpClientFactory,
                            ILogger<OrderService> logger,
                            IEmailMessageService emailMessageService,
                            IOrderClient orderClient)
         {
             _repository = repository;
-            _httpClientFactory = httpClientFactory;
             _logger = logger;
             _emailMessageService = emailMessageService;
             _orderClient = orderClient;
