@@ -1,7 +1,8 @@
 ﻿using Autofac.Extras.Moq;
 using BuyNow.Core.Common;
+using BuyNow.Core.Exceptions;
 using BuyNow.Core.Helpers;
-using BuyNow.Data;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Order.Common.DTOs;
 using Order.Common.Models;
@@ -356,6 +357,129 @@ namespace Order.Test.Services
                 result => _repositoryMock.Verify()
                 );
         }
+
+        [Test]
+        public async Task CloseOrderAsync_WithInvalidOrderId_ThrowsNotFoundException()
+        {
+            // Arrange
+            var invalidOrderId = 0;
+            OrderEO? order = null;
+
+            _repositoryMock.Setup(r => r.OrderRepository);
+
+            _repositoryMock.Setup(r => r.OrderRepository.GetOrderByIdAsync(invalidOrderId))
+                .ReturnsAsync(order)
+                .Verifiable();
+
+            // Act and Assert
+            await Should.ThrowAsync<NotFoundException>(async () => await _orderService.CloseOrderAsync(invalidOrderId));
+            _repositoryMock.Verify();
+        }
+
+        [Test]
+        public async Task CloseOrderAsync_WithSuccessfulProductAvailabilityCheck_UpdatesOrderStatusAndAddsSuccessMessageToQueue()
+        {
+            // Arrange
+            var orderId = 1;
+            var order = new OrderEO { 
+                Id = orderId,
+                OrderDetails = new List<OrderDetail>
+                { 
+                    new OrderDetail { ProductId = 1, Quantity = 2 }
+                }
+            };
+
+            var productCheckModel = PrepareProductAvailablityCheckModel(order.OrderDetails);
+            var responseData = new Response { IsSuccess = true, StatusCode = 200 };
+
+            _repositoryMock.Setup(r => r.OrderRepository);
+
+            _repositoryMock.Setup(r => r.OrderRepository.GetOrderByIdAsync(orderId))
+                .ReturnsAsync(order)
+                .Verifiable();
+
+            _repositoryMock.Setup(r => r.OrderRepository.Edit(It.IsAny<OrderEO>()))
+                .Verifiable();
+
+            _repositoryMock.Setup(r => r.SaveAsync())
+                .Returns(Task.CompletedTask);
+
+            _orderClientMock.Setup(o => o.SendRequestAsync<Response>(It.IsAny<HttpRequestMessage>()))
+                .ReturnsAsync(responseData);
+
+            _emailMessageServiceMock.Setup(e => e.AddMessageAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            await _orderService.CloseOrderAsync(orderId);
+
+            // Assert
+            _repositoryMock.Verify(r => r.OrderRepository.GetOrderByIdAsync(orderId), Times.Once);
+            _repositoryMock.Verify(r => r.SaveAsync(), Times.Once);
+            _emailMessageServiceMock.Verify(e => e.AddMessageAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            _repositoryMock.Verify();
+        }
+
+        [Test]
+        public async Task CloseOrderAsync_WithFailedProductAvailabilityCheck_UpdatesOrderStatusAndAddsFailedMessageToQueue()
+        {
+            // Arrange
+            var orderId = 1;
+            var order = new OrderEO
+            {
+                Id = orderId,
+                OrderDetails = new List<OrderDetail>
+                {
+                    new OrderDetail { ProductId = 1, Quantity = 2 }
+                }
+            };
+
+            var productCheckModel = PrepareProductAvailablityCheckModel(order.OrderDetails);
+            var responseData = new Response { IsSuccess = false, StatusCode = 400 };
+
+            _repositoryMock.Setup(r => r.OrderRepository);
+
+            _repositoryMock.Setup(r => r.OrderRepository.GetOrderByIdAsync(orderId))
+                .ReturnsAsync(order)
+                .Verifiable();
+
+            _repositoryMock.Setup(r => r.SaveAsync())
+                .Returns(Task.CompletedTask);
+
+            _orderClientMock.Setup(o => o.SendRequestAsync<Response>(It.IsAny<HttpRequestMessage>()))
+                .ReturnsAsync(responseData);
+
+            _emailMessageServiceMock.Setup(e => e.AddMessageAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            await _orderService.CloseOrderAsync(orderId);
+
+            // Assert
+            _repositoryMock.Verify(r => r.OrderRepository.GetOrderByIdAsync(orderId), Times.Once);
+            _repositoryMock.Verify(r => r.SaveAsync(), Times.Once);
+            _emailMessageServiceMock.Verify(e => e.AddMessageAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        }
+
+
+        private List<ProductAvailablityModel> PrepareProductAvailablityCheckModel(List<OrderDetail> orderDetails)
+        {
+            var productList = new List<ProductAvailablityModel>();
+
+            orderDetails.ForEach(od =>
+            {
+                var product = new ProductAvailablityModel
+                {
+                    Id = od.ProductId,
+                    Quantity = od.Quantity,
+                };
+
+                productList.Add(product);
+            });
+
+            return productList;
+        }
+
 
         private OrderModel GetOrderModel()
         {

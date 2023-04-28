@@ -9,6 +9,7 @@ using Order.Services.HttpClients;
 using Order.Services.Mails;
 using Order.Services.Mails.MailTemplates;
 using OrderModule.Core.Domain;
+using OrderModule.Core.Enums;
 using OrderModule.Data;
 using System.Text;
 using OrderEO = OrderModule.Core.Domain.Order;
@@ -79,12 +80,15 @@ namespace Order.Services.Orders
 
             if (responseData is not null && (responseData.IsSuccess && responseData.StatusCode == 200))
             {
-                await UpdateOrderStatus(order, responseData);
+                await UpdateOrderStatus(order, OrderStatusEnum.Closed);
                 await AddOrderSuccessMessageToQueue(order.Id, order.CustomerEmail);
                 await UpdateProductsQuantity(productCheckModel);
             }
             else
             {
+                await UpdateOrderStatus(order, OrderStatusEnum.Closed);
+                await AddOrderFailedMessageToQueue(order.Id, order.CustomerEmail);
+
                 _logger.LogError("Not able to proceed this order, something went wrong!");
             }
         }
@@ -102,9 +106,9 @@ namespace Order.Services.Orders
             return request;
         }
 
-        private async Task UpdateOrderStatus(OrderEO order, Response response)
+        private async Task UpdateOrderStatus(OrderEO order, OrderStatusEnum orderStatus)
         {
-            order.Status = OrderModule.Core.Enums.OrderStatusEnum.Closed;
+            order.Status = orderStatus;
             order.LastUpdatedAt = DateTime.UtcNow;
 
             _repository.OrderRepository.Edit(order);
@@ -112,6 +116,14 @@ namespace Order.Services.Orders
         }
 
         private async Task AddOrderSuccessMessageToQueue(int orderId, string customerEmail)
+        {
+            var emailTemplate = new OrderSuccessMailTemplate(orderId, "support@gmail.com");
+            var subject = "Order status";
+            var emailBody = emailTemplate.TransformText();
+            await _emailMessageService.AddMessageAsync(customerEmail, subject, emailBody);
+        }
+
+        private async Task AddOrderFailedMessageToQueue(int orderId, string customerEmail)
         {
             var emailTemplate = new OrderSuccessMailTemplate(orderId, "support@gmail.com");
             var subject = "Order status";
