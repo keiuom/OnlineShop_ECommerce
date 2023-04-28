@@ -87,7 +87,7 @@ namespace Order.Services.Orders
             else
             {
                 await UpdateOrderStatus(order, OrderStatusEnum.Closed);
-                await AddOrderFailedMessageToQueue(order.Id, order.CustomerEmail);
+                await AddOrderFailedMessageToQueue("Due to product unavailability, we are not able to process your order!", order.CustomerEmail);
 
                 _logger.LogError("Not able to proceed this order, something went wrong!");
             }
@@ -123,9 +123,9 @@ namespace Order.Services.Orders
             await _emailMessageService.AddMessageAsync(customerEmail, subject, emailBody);
         }
 
-        private async Task AddOrderFailedMessageToQueue(int orderId, string customerEmail)
+        private async Task AddOrderFailedMessageToQueue(string failedReason, string customerEmail)
         {
-            var emailTemplate = new OrderSuccessMailTemplate(orderId, "support@gmail.com");
+            var emailTemplate = new OrderFailedMailTemplate(failedReason, "support@gmail.com");
             var subject = "Order status";
             var emailBody = emailTemplate.TransformText();
             await _emailMessageService.AddMessageAsync(customerEmail, subject, emailBody);

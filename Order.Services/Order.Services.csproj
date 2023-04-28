@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Mails\MailTemplates\OrderFailedMailTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrderFailedMailTemplate.tt</DependentUpon>
+    </None>
     <None Include="Mails\MailTemplates\OrderSuccessMailTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -36,6 +41,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Mails\MailTemplates\OrderFailedMailTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OrderFailedMailTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Update="Mails\MailTemplates\OrderSuccessMailTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -44,6 +54,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Mails\MailTemplates\OrderFailedMailTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>OrderFailedMailTemplate.cs</LastGenOutput>
+    </None>
     <None Update="Mails\MailTemplates\OrderSuccessMailTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>OrderSuccessMailTemplate.cs</LastGenOutput>
