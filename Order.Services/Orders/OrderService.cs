@@ -87,32 +87,6 @@ namespace Order.Services.Orders
             {
                 _logger.LogError("Not able to proceed this order, something went wrong!");
             }
-
-            //var client = _httpClientFactory.CreateClient();
-
-            
-            //var body = System.Text.Json.JsonSerializer.Serialize(productCheckModel);
-            //var content = new StringContent(body, Encoding.UTF8, "application/json");
-            //var url = "https://localhost:7097/api/Products/ProductAvailablityCheck/";
-
-            //var response = await client.PostAsync(url, content);
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var responseContent = await response.Content.ReadAsStringAsync();
-            //    var responseData = System.Text.Json.JsonSerializer.Deserialize<Response>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            //    if (responseData is not null && (responseData.IsSuccess && responseData.StatusCode == 200))
-            //    {
-            //        await UpdateOrderStatus(order, responseData);
-            //        await AddOrderSuccessMessageToQueue(order.Id, order.CustomerEmail);
-            //        await UpdateProductsQuantity(productCheckModel);
-            //    }
-            //}
-            //else
-            //{
-                
-            //}
         }
 
         private HttpRequestMessage PrepareRequestPayload(object data, string apiPath, HttpMethod httpMethod)
