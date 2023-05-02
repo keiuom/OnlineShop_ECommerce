@@ -16,15 +16,30 @@ namespace Inventory.Services.Products
             _repository = repository;
         }
 
-        public Task<List<GetProductDto>> GetProductsAsync()
+        public async Task<List<GetProductDto>> GetProductsAsync()
         {
-            //var products = await _productRepository.GetAllAsync();
-            throw new NotImplementedException();
+            var products = (await _repository.ProductRepository.GetAllAsync())
+                            .ToList();
+
+            var getProductDtos = products.Select(p =>
+            {
+                return new GetProductDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Quantity = p.Quantity
+                };
+            }).ToList();
+
+            return getProductDtos;
         }
 
         public async Task<GetProductDto> GetProductByIdAsync(int productId)
         {
             var product = await GetProductEntityAsync(productId);
+
+            if (product is null)
+                throw new NotFoundException(nameof(Product));
 
             return new GetProductDto { 
                 Id = product.Id,
@@ -110,7 +125,7 @@ namespace Inventory.Services.Products
             {
                 var existingProduct = productList.FirstOrDefault(p => p.Id == product.Id);
 
-                if (existingProduct is not null)
+                if (existingProduct is not null && existingProduct.Quantity >= product.Quantity)
                 {
                     existingProduct.Quantity = existingProduct.Quantity - product.Quantity;
                     existingProduct.LastUpdatedAt = DateTime.UtcNow;
