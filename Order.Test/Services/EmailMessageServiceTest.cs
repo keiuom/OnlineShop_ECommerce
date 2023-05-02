@@ -1,6 +1,4 @@
 ﻿using Autofac.Extras.Moq;
-using BuyNow.Core.Common;
-using BuyNow.Data;
 using Moq;
 using Order.Common.Models;
 using Order.Core.Domain;
@@ -109,6 +107,53 @@ namespace Order.Test.Services
                 result => result.ShouldBeOfType<List<EmailMessage>>(),
                 result => result.Count.ShouldBeEquivalentTo(0)
                 );
+        }
+
+        [Test]
+        public async Task UpdateMessageAsync_WithValidEmailMessage_CallsEditMethodOnce()
+        {
+            // Arrange
+            var emailMessage = new EmailMessage { 
+                Id = 1,
+                Recipient = _recipient,
+                Subject = _subject,
+                Body = _body
+            };
+
+            _repositoryMock.Setup(r => r.EmailMessageRepository)
+                .Returns(_emailMessageRepositoryMock.Object);
+
+            _repositoryMock.Setup(r => r.EmailMessageRepository.Edit(emailMessage))
+                .Verifiable();
+
+            // Act
+            await _emailMessageService.UpdateMessageAsync(emailMessage);
+
+            // Assert
+            _repositoryMock.Verify(r => r.EmailMessageRepository.Edit(emailMessage), Times.Once);
+            _repositoryMock.Verify(r => r.SaveAsync(), Times.Once);
+            _repositoryMock.Verify();
+        }
+
+        [Test]
+        public async Task UpdateMessagesAsync_WithValidEmailMessage_CallsEditMethodOnce()
+        {
+            // Arrange
+            var emailMessages = GetEmailMessages();
+
+            _repositoryMock.Setup(r => r.EmailMessageRepository)
+                .Returns(_emailMessageRepositoryMock.Object);
+
+            _repositoryMock.Setup(r => r.EmailMessageRepository.EditRange(emailMessages))
+                .Verifiable();
+
+            // Act
+            await _emailMessageService.UpdateMessagesAsync(emailMessages);
+
+            // Assert
+            _repositoryMock.Verify(r => r.EmailMessageRepository.EditRange(emailMessages), Times.Once);
+            _repositoryMock.Verify(r => r.SaveAsync(), Times.Once);
+            _repositoryMock.Verify();
         }
 
         private List<EmailMessage> GetEmailMessages()
