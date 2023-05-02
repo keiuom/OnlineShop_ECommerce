@@ -3,7 +3,7 @@ using OrderModule.Data.Repositories;
 
 namespace Order.Data.RepositoryWrappers
 {
-    public interface lQueueMailRepositoryWrapper
+    public interface IQueueMailRepositoryWrapper
     {
         public IEmailMessageRepository EmailMessageRepository { get; set; }
 

@@ -3,7 +3,7 @@ using Order.Data.Repositories;
 
 namespace Order.Data.RepositoryWrappers
 {
-    public class QueueMailRepositoryWrapper : lQueueMailRepositoryWrapper
+    public class QueueMailRepositoryWrapper : IQueueMailRepositoryWrapper
     {
         private readonly EmailDbContext _dbContext;
 

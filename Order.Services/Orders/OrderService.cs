@@ -120,7 +120,9 @@ namespace Order.Services.Orders
             var emailTemplate = new OrderSuccessMailTemplate(orderId, "support@gmail.com");
             var subject = "Order status";
             var emailBody = emailTemplate.TransformText();
-            await _emailMessageService.AddMessageAsync(customerEmail, subject, emailBody);
+
+            var emailMessageModel = new AddEmailMessageModel(customerEmail, subject, emailBody);
+            await _emailMessageService.AddMessageAsync(emailMessageModel);
         }
 
         private async Task AddOrderFailedMessageToQueue(string failedReason, string customerEmail)
@@ -128,7 +130,9 @@ namespace Order.Services.Orders
             var emailTemplate = new OrderFailedMailTemplate(failedReason, "support@gmail.com");
             var subject = "Order status";
             var emailBody = emailTemplate.TransformText();
-            await _emailMessageService.AddMessageAsync(customerEmail, subject, emailBody);
+
+            var emailMessageModel = new AddEmailMessageModel(customerEmail, subject, emailBody);
+            await _emailMessageService.AddMessageAsync(emailMessageModel);
         }
 
         private async Task UpdateProductsQuantity(List<ProductAvailablityModel> products)

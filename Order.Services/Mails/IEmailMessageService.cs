@@ -1,4 +1,5 @@
-﻿using Order.Core.Domain;
+﻿using Order.Common.Models;
+using Order.Core.Domain;
 
 namespace Order.Services.Mails
 {
@@ -6,7 +7,7 @@ namespace Order.Services.Mails
     {
         Task<List<EmailMessage>> GetAllUnsentMessagesAsync();
 
-        Task AddMessageAsync(string recipient, string subject, string body);
+        Task AddMessageAsync(AddEmailMessageModel messageModel);
 
         Task UpdateMessageAsync(EmailMessage emailMessage);
 

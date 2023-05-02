@@ -2,7 +2,6 @@
 using BuyNow.Core.Common;
 using BuyNow.Core.Exceptions;
 using BuyNow.Core.Helpers;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Order.Common.DTOs;
 using Order.Common.Models;
@@ -44,7 +43,10 @@ namespace Order.Test.Services
         }
 
         [TearDown]
-        public void Teardown() { }
+        public void Teardown() 
+        { 
+            _autoMock?.Dispose();
+        }
 
         [Test]
         public async Task PlaceOrderAsync_WithValidOrder_ReturnsSuccessResponse()
@@ -407,7 +409,7 @@ namespace Order.Test.Services
             _orderClientMock.Setup(o => o.SendRequestAsync<Response>(It.IsAny<HttpRequestMessage>()))
                 .ReturnsAsync(responseData);
 
-            _emailMessageServiceMock.Setup(e => e.AddMessageAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            _emailMessageServiceMock.Setup(e => e.AddMessageAsync(It.IsAny<AddEmailMessageModel>()))
                 .Returns(Task.CompletedTask);
 
             // Act
@@ -416,7 +418,7 @@ namespace Order.Test.Services
             // Assert
             _repositoryMock.Verify(r => r.OrderRepository.GetOrderByIdAsync(orderId), Times.Once);
             _repositoryMock.Verify(r => r.SaveAsync(), Times.Once);
-            _emailMessageServiceMock.Verify(e => e.AddMessageAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            _emailMessageServiceMock.Verify(e => e.AddMessageAsync(It.IsAny<AddEmailMessageModel>()), Times.Once);
             _repositoryMock.Verify();
         }
 
@@ -449,7 +451,7 @@ namespace Order.Test.Services
             _orderClientMock.Setup(o => o.SendRequestAsync<Response>(It.IsAny<HttpRequestMessage>()))
                 .ReturnsAsync(responseData);
 
-            _emailMessageServiceMock.Setup(e => e.AddMessageAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            _emailMessageServiceMock.Setup(e => e.AddMessageAsync(It.IsAny<AddEmailMessageModel>()))
                 .Returns(Task.CompletedTask);
 
             // Act
@@ -458,7 +460,7 @@ namespace Order.Test.Services
             // Assert
             _repositoryMock.Verify(r => r.OrderRepository.GetOrderByIdAsync(orderId), Times.Once);
             _repositoryMock.Verify(r => r.SaveAsync(), Times.Once);
-            _emailMessageServiceMock.Verify(e => e.AddMessageAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            _emailMessageServiceMock.Verify(e => e.AddMessageAsync(It.IsAny<AddEmailMessageModel>()), Times.Once);
         }
 
 

@@ -1,26 +1,27 @@
-﻿using Order.Core.Domain;
+﻿using Order.Common.Models;
+using Order.Core.Domain;
 using Order.Data.RepositoryWrappers;
 
 namespace Order.Services.Mails
 {
     public class EmailMessageService : IEmailMessageService
     {
-        private readonly lQueueMailRepositoryWrapper _repository;
+        private readonly IQueueMailRepositoryWrapper _repository;
 
-        public EmailMessageService(lQueueMailRepositoryWrapper repository)
+        public EmailMessageService(IQueueMailRepositoryWrapper repository)
         {
             _repository = repository;
         }
 
-        public async Task AddMessageAsync(string recipient, string subject, string body)
+        public async Task AddMessageAsync(AddEmailMessageModel messageModel)
         {
             var dateTime = DateTime.UtcNow;
 
             var message = new EmailMessage
             {
-                Recipient = recipient,
-                Subject = subject,
-                Body = body,
+                Recipient = messageModel.Recipient,
+                Subject = messageModel.Subject,
+                Body = messageModel.Body,
                 CreatedAt = dateTime,
                 LastUpdatedAt = dateTime,
             };

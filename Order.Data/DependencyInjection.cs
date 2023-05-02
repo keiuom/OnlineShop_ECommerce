@@ -29,7 +29,7 @@ namespace OrderModule.Data
         private static void Load(IServiceCollection services)
         {
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            services.AddScoped<lQueueMailRepositoryWrapper, QueueMailRepositoryWrapper>();
+            services.AddScoped<IQueueMailRepositoryWrapper, QueueMailRepositoryWrapper>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IEmailMessageRepository, EmailMessageRepository>();
         }
