@@ -1,11 +1,8 @@
-﻿using Autofac.Extras.Moq;
-using Moq;
-using Order.Common.Models;
+﻿using Order.Common.Models;
 using Order.Core.Domain;
 using Order.Data.Repositories;
 using Order.Data.RepositoryWrappers;
 using Order.Services.Mails;
-using Shouldly;
 using System.Linq.Expressions;
 
 namespace Order.Test.Services

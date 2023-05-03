@@ -1,8 +1,6 @@
-﻿using Autofac.Extras.Moq;
-using BuyNow.Core.Common;
+﻿using BuyNow.Core.Common;
 using BuyNow.Core.Exceptions;
 using BuyNow.Core.Helpers;
-using Moq;
 using Order.Common.DTOs;
 using Order.Common.Models;
 using Order.Services.HttpClients;
@@ -11,7 +9,6 @@ using Order.Services.Orders;
 using OrderModule.Core.Domain;
 using OrderModule.Data;
 using OrderModule.Data.Repositories;
-using Shouldly;
 using OrderEO = OrderModule.Core.Domain.Order;
 
 namespace Order.Test.Services

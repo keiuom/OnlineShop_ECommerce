@@ -37,6 +37,7 @@ namespace Order.Services.HttpClients
 
             if (responseMessage.IsSuccessStatusCode)
             {
+                var res = await responseMessage.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<T>(await responseMessage.Content.ReadAsStringAsync());
             }
 
