@@ -12,6 +12,7 @@ namespace BuyNow.API.OrderModule.StartupServices
             services.LoadDependency();
 
             services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
+            services.Configure<RabbitMQSettings>(configuration.GetSection("RabbitMQSettings"));
         }
     }
 }

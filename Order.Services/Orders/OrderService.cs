@@ -8,6 +8,7 @@ using Order.Common.Models;
 using Order.Services.HttpClients;
 using Order.Services.Mails;
 using Order.Services.Mails.MailTemplates;
+using Order.Services.Queues;
 using OrderModule.Core.Domain;
 using OrderModule.Core.Enums;
 using OrderModule.Data;
@@ -22,17 +23,20 @@ namespace Order.Services.Orders
         private readonly ILogger<OrderService> _logger;
         private readonly IEmailMessageService _emailMessageService;
         private readonly IOrderClient _orderClient;
+        private readonly IQueueService _queueService;
         private const string _baseUrl = "https://localhost:7097/api/Products";
 
         public OrderService(IRepositoryWrapper repository,
                            ILogger<OrderService> logger,
                            IEmailMessageService emailMessageService,
-                           IOrderClient orderClient)
+                           IOrderClient orderClient,
+                           IQueueService queueService)
         {
             _repository = repository;
             _logger = logger;
             _emailMessageService = emailMessageService;
             _orderClient = orderClient;
+            _queueService = queueService;
         }
 
         public async Task<Response> PlaceOrderAsync(OrderModel orderModel)
@@ -83,13 +87,25 @@ namespace Order.Services.Orders
                 await UpdateOrderStatus(order, OrderStatusEnum.Closed);
                 await AddOrderSuccessMessageToQueue(order.Id, order.CustomerEmail);
                 await UpdateProductsQuantity(productCheckModel);
+
+                var emailTemplate = new OrderSuccessMailTemplate(orderId, "support@gmail.com");
+                var subject = "Order process status";
+                var emailBody = emailTemplate.TransformText();
+
+                AddQueueMessage(order.CustomerEmail, subject, emailBody);
             }
             else
             {
                 await UpdateOrderStatus(order, OrderStatusEnum.Closed);
                 await AddOrderFailedMessageToQueue("Due to product unavailability, we are not able to process your order!", order.CustomerEmail);
 
-                _logger.LogError("Not able to proceed this order, something went wrong!");
+                var emailTemplate = new OrderFailedMailTemplate("Due to product unavailability, we are not able to process your order!", "support@gmail.com");
+                var subject = "Order process status";
+                var emailBody = emailTemplate.TransformText();
+
+                AddQueueMessage(order.CustomerEmail, subject, emailBody);
+
+                _logger.LogError($"Not able to proceed this order. orderId: {orderId}, something went wrong!");
             }
         }
 
@@ -133,6 +149,16 @@ namespace Order.Services.Orders
 
             var emailMessageModel = new AddEmailMessageModel(customerEmail, subject, emailBody);
             await _emailMessageService.AddMessageAsync(emailMessageModel);
+        }
+
+        private void AddQueueMessage(string email, string subject, string body)
+        {
+            _queueService.SendMessage(new QueueEmailModel
+            {
+                Recipient = email,
+                Subject = subject,
+                Body = body
+            });
         }
 
         private async Task UpdateProductsQuantity(List<ProductAvailablityModel> products)
