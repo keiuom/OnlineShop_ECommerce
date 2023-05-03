@@ -1,4 +1,4 @@
-﻿using Order.Core.Mails;
+﻿using Order.Core.Settings;
 using OrderModule.Data;
 using OrderModule.Services;
 

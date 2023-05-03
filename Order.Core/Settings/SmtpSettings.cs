@@ -1,4 +1,4 @@
-﻿namespace Order.Core.Mails
+﻿namespace Order.Core.Settings
 {
     public class SmtpSettings
     {

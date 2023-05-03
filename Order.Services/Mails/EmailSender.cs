@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Net.Smtp;
-using Order.Core.Mails;
+using Order.Core.Settings;
 
 namespace Order.Services.Mails
 {
